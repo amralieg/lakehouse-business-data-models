@@ -27,6 +27,24 @@ MVM ≈ 45% of ECM by table count, but retains 50% of attributes and 70% of FK r
 
 ---
 
+## v2 regeneration (agent v4.1.4)
+
+Five industries are published at **`v2/`** with agent **v4.1.4** using a vibe-of-version pass (ECM rebuild → MVM shrink) that applies audit-detected critical fixes (correct column types, PII tagging, removal of stub products, denser FK linking) on top of the v1 baseline. Each lands as a `v2/` sibling next to `v1/`; the installer resolves the latest version automatically.
+
+Quality is the agent's deterministic model-quality score (0–100), reported per flavour. Verified adherence is the physical ground-truth parity — tags, types, and metric views actually present in the installed catalog divided by those the model declares. It is the honest end-to-end number, not the agent's self-report.
+
+| Industry | ECM quality | MVM quality | Verified adherence | Models |
+|---|---:|---:|---:|---|
+| [Construction](./data-models/construction/v2/) | 64.5 | 80.5 | 90.5% | [ecm](./data-models/construction/v2/ecm/) · [mvm](./data-models/construction/v2/mvm/) |
+| [Semiconductors](./data-models/semiconductors/v2/) | 43.6 | 68.8 | 92.2% | [ecm](./data-models/semiconductors/v2/ecm/) · [mvm](./data-models/semiconductors/v2/mvm/) |
+| [Consumer Goods](./data-models/consumer_goods/v2/) | 43.0 | 74.3 | 89.7% | [ecm](./data-models/consumer_goods/v2/ecm/) · [mvm](./data-models/consumer_goods/v2/mvm/) |
+| [Health Insurance](./data-models/health_insurance/v2/) | 51.0 | 82.2 | 84.9% | [ecm](./data-models/health_insurance/v2/ecm/) · [mvm](./data-models/health_insurance/v2/mvm/) |
+| [Travel & Hospitality](./data-models/travel_hospitality/v2/) | 56.4 | 79.4 | 82.8% | [ecm](./data-models/travel_hospitality/v2/ecm/) · [mvm](./data-models/travel_hospitality/v2/mvm/) |
+
+Eight more industries (`restaurants`, `retail`, `healthcare`, `automotive`, `ngo`, `water_utilities`, `manufacturing`, `media_broadcasting`) are being re-generated on agent v4.1.5 — which hardens the connect/add-FK applier, the SelfFixer sandbox None-guard, and metric-view type reconciliation — and will land here once they clear the quality bar. ECM quality scores are intentionally lower than MVM: the ECM is the broad conceptual model, the MVM is the polished, join-dense subset.
+
+---
+
 ## How to install a model
 
 Install any model into Unity Catalog — catalog, schemas, tables, foreign keys, governance tags, and metric views — with the **[`model-installer/data-model-installer.ipynb`](./model-installer/data-model-installer.ipynb)** notebook. It is Databricks Serverless compatible (every operation is a plain `spark.sql` call).
